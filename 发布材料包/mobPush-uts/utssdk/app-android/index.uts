@@ -8,6 +8,7 @@ import Context from 'android.content.Context';
 import KotlinArray from 'kotlin.Array';
 import MobPushCallback from 'com.mob.pushsdk.MobPushCallback';
 import MobSDK from 'com.mob.MobSDK'
+import HashonHelper from 'com.mob.tools.utils.HashonHelper';
 
 let hasAddChannel = false
 
@@ -115,18 +116,18 @@ class unireceiver extends MobPushReceiver {
 	}
 
 	override  onCustomMessageReceive(context : Context, mobPushCustomMessage : MobPushCustomMessage) : void {
-		this.jsReceiver.onCustomMessageReceive(JSON.stringify(mobPushCustomMessage))
+		this.jsReceiver.onCustomMessageReceive(HashonHelper.fromObject(mobPushCustomMessage))
 	}
 
 	override  onNotifyMessageReceive(context : Context, mobPushNotifyMessage : MobPushNotifyMessage) : void {
-		this.jsReceiver.onNotifyMessageReceive(JSON.stringify(mobPushNotifyMessage))
+		this.jsReceiver.onNotifyMessageReceive(HashonHelper.fromObject(mobPushNotifyMessage))
 	}
 
 	override  onNotifyMessageOpenedReceive(context : Context, mobPushNotifyMessage : MobPushNotifyMessage) : void {
-		this.jsReceiver.onNotifyMessageOpenedReceive(JSON.stringify(mobPushNotifyMessage))
+		this.jsReceiver.onNotifyMessageOpenedReceive(HashonHelper.fromObject(mobPushNotifyMessage))
 	}
 
-	override onTagsCallback(context : Context, tags? : KotlinArray<string>, operation : Int, errorCode : Int) : void {
+	override onTagsCallback(context : Context, tags ?: KotlinArray<string>, operation : Int, errorCode : Int) : void {
 		if (tags == null) {
 			tags = arrayOf("")
 		}

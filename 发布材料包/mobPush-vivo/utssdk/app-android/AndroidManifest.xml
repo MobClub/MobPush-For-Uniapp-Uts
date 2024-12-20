@@ -4,14 +4,14 @@
 	<application>
 
 		<service android:name="com.vivo.push.sdk.service.CommandClientService" android:exported="true" />
-		<activity android:theme="@android:style/Theme.Translucent.NoTitleBar"
-			android:name="com.vivo.push.sdk.LinkProxyClientActivity" android:exported="false"
-			android:screenOrientation="portrait" />
-		<receiver android:name="com.mob.pushsdk.plugins.vivo.PushVivoReceiver" android:exported="true" />
-		<intent-filter>
-			<action android:name="com.vivo.pushclient.action.RECEIVE" />
-		</intent-filter>
+		<activity android:name="com.vivo.push.sdk.LinkProxyClientActivity" android:exported="false"
+			android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+		<receiver android:name="com.mob.pushsdk.plugins.vivo.PushVivoReceiver" android:exported="true">
+			<intent-filter>
+				<action android:name="com.vivo.pushclient.action.RECEIVE" />
+			</intent-filter>
 		</receiver>
+
 		<meta-data android:name="com.vivo.push.api_key" android:value="${Vivo-AppKey}" />
 		<meta-data android:name="com.vivo.push.app_id" android:value="${Vivo-AppId}" />
 
