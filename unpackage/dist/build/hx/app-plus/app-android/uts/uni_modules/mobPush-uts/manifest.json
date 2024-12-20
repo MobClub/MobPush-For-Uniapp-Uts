@@ -1,0 +1,38 @@
+{
+  "version": "1",
+  "env": {
+    "compilerVersion": "4.36.2024112817"
+  },
+  "files": {
+    "utssdk/app-android/index.uts": {
+      "md5": "c3f7981d1ec44cd6766517dbe7735393"
+    },
+    "utssdk/interface.uts": {
+      "md5": "037def9288cfdabe59fe520d5b2f274b"
+    },
+    "utssdk/unierror.uts": {
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "package.json": {
+      "md5": "2522ac335e88a838ba02a1c9cd094186"
+    },
+    "utssdk/app-android/config.json": {
+      "md5": "643b2980a54aaca20ecd07d593fb4099"
+    },
+    "utssdk/app-android/libs/MobCoreULT-2024.1016.1321.aar": {
+      "md5": "95bcdb661e48157c1e695186ad25ca06"
+    },
+    "utssdk/app-android/libs/MobGUIULT-2024.1016.1321.jar": {
+      "md5": "7e6affd0c9c225082d4739464fd5dd59"
+    },
+    "utssdk/app-android/libs/MobIDSULT-2024.1016.1321.aar": {
+      "md5": "f62415854834458855c1633221498591"
+    },
+    "utssdk/app-android/libs/MobSupportV1-2024.1016.1321.jar": {
+      "md5": "ced5968964fb52d89bd689570fbfaa33"
+    },
+    "utssdk/app-android/libs/PushSDK-4.6.27.aar": {
+      "md5": "0deb57ddca4b55545ae34b4b0fab7a76"
+    }
+  }
+}

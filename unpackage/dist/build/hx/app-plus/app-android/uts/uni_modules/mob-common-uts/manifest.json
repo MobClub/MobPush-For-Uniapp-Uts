@@ -1,0 +1,38 @@
+{
+  "version": "1",
+  "env": {
+    "compilerVersion": "4.36.2024112817"
+  },
+  "files": {
+    "utssdk/app-android/index.uts": {
+      "md5": "4799db2eceb70f7574fa1cb0c7935fca"
+    },
+    "utssdk/interface.uts": {
+      "md5": "407204d8771e2c6bada0b1428364dec1"
+    },
+    "utssdk/unierror.uts": {
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "package.json": {
+      "md5": "7b1b5058d9128b0af2f6eee7752b8f6e"
+    },
+    "utssdk/app-android/AndroidManifest.xml": {
+      "md5": "ebf49693e5220f73934d653467a12fb4"
+    },
+    "utssdk/app-android/config.json": {
+      "md5": "643b2980a54aaca20ecd07d593fb4099"
+    },
+    "utssdk/app-android/libs/MobCoreULT-2024.1016.1321.aar": {
+      "md5": "95bcdb661e48157c1e695186ad25ca06"
+    },
+    "utssdk/app-android/libs/MobGUIULT-2024.1016.1321.jar": {
+      "md5": "7e6affd0c9c225082d4739464fd5dd59"
+    },
+    "utssdk/app-android/libs/MobIDSULT-2024.1016.1321.aar": {
+      "md5": "f62415854834458855c1633221498591"
+    },
+    "utssdk/app-android/libs/MobSupportV1-2024.1016.1321.jar": {
+      "md5": "ced5968964fb52d89bd689570fbfaa33"
+    }
+  }
+}
