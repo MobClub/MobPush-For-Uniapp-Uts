@@ -31,7 +31,9 @@
 
 
 <script>
-	import {mobSDKsubmitPolicyGrantResult} from "@/uni_modules/mob-common-uts";
+	import {
+		mobSDKsubmitPolicyGrantResult
+	} from "@/uni_modules/mob-common-uts";
 	import {
 		getRegistrationID,
 		addPushReceiver,
@@ -49,13 +51,27 @@
 		setShowBadge,
 		getShowBadge
 	} from "@/uni_modules/mobPush-uts"
-	import { fcmCompileOnly } from "@/uni_modules/mobPush-fcm";
-	import { honorCompileOnly } from "@/uni_modules/mobPush-honor";
-	import { huaweiCompileOnly } from "@/uni_modules/mobPush-huawei";
-	import { meizuCompileOnly } from "@/uni_modules/mobPush-meizu";
-	import { oppoCompileOnly } from "@/uni_modules/mobPush-oppo";
-	import { vivoCompileOnly } from "@/uni_modules/mobPush-vivo";
-	import { xiaomiCompileOnly } from "@/uni_modules/mobPush-xiaomi";
+	import {
+		fcmCompileOnly
+	} from "@/uni_modules/mobPush-fcm";
+	import {
+		honorCompileOnly
+	} from "@/uni_modules/mobPush-honor";
+	import {
+		huaweiCompileOnly
+	} from "@/uni_modules/mobPush-huawei";
+	import {
+		meizuCompileOnly
+	} from "@/uni_modules/mobPush-meizu";
+	import {
+		oppoCompileOnly
+	} from "@/uni_modules/mobPush-oppo";
+	import {
+		vivoCompileOnly
+	} from "@/uni_modules/mobPush-vivo";
+	import {
+		xiaomiCompileOnly
+	} from "@/uni_modules/mobPush-xiaomi";
 	export default {
 		created: function() {
 
@@ -81,7 +97,7 @@
 				getRegistrationID({
 					onCallback(res) {
 						uni.showToast({
-							title: "rid:" + res,
+							title: "rid:" + JSON.stringify(res),
 							icon: 'none',
 							duration: 5000
 						})
@@ -146,7 +162,7 @@
 				isPushStopped({
 					onCallback(res) {
 						uni.showToast({
-							title: "isPushStopped:" + res,
+							title: "isPushStopped:" + JSON.stringify(res),
 							icon: 'none',
 							duration: 5000
 						})
@@ -239,7 +255,7 @@
 				getShowBadge({
 					onCallback(res) {
 						uni.showToast({
-							title: "getShowBadge:" + res,
+							title: "getShowBadge:" + JSON.stringify(res),
 							icon: 'none',
 							duration: 5000
 						})

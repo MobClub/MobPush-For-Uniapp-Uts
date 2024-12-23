@@ -1,5 +1,5 @@
 export type UniMobPushCallback = {
-	onCallback : (res : any) => void
+	onCallback : (res : UTSJSONObject) => void
 }
 
 export type UniMobPushReceiver = {

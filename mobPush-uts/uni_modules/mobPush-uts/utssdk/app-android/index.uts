@@ -105,7 +105,12 @@ class unicallback<T> extends MobPushCallback<T> {
 	}
 
 	override onCallback(data : T) : void {
-		this.jsCallback.onCallback(data as any)
+		let result : UTSJSONObject = {
+			"success": true,
+			"res": data as any,
+			"error": null
+		}
+		this.jsCallback.onCallback(result)
 	}
 }
 
