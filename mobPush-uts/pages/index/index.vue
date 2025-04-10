@@ -6,6 +6,7 @@
 				<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper"
 					@scrolltolower="lower" @scroll="scroll">
 					<button v-on:click="unisubmitPolicyGrantResult">submitPolicyGrantResult</button>
+					<button v-on:click="configiOSApp">registerAndConfig(iOS)</button>
 					<button v-on:click="unigetRegistrationID">getRegistrationID</button>
 					<button v-on:click="uniaddPushReceiver">addPushReceiver</button>
 					<button v-on:click="unistopPush">stopPush</button>
@@ -20,9 +21,9 @@
 					<button v-on:click="unideleteTags(tagsStr)">deleteTags</button>
 					<button v-on:click="unigetTags">getTags</button>
 					<button v-on:click="unicleanAllTags">cleanAllTags</button>
-					<button v-on:click="unisetShowBadge">setShowBadge</button>
+					<button v-on:click="unisetShowBadge">setShowBadge(Android)</button>
 					<button v-on:click="unigetShowBadge">getShowBadge</button>
-					<button v-on:click="unisetSilenceTime">setSilenceTime</button>
+					<button v-on:click="unisetSilenceTime">setSilenceTime(Android)</button>
 				</scroll-view>
 			</view>
 		</view>
@@ -35,7 +36,11 @@
 		mobSDKsubmitPolicyGrantResult
 	} from "@/uni_modules/mob-common-uts";
 	import {
+		agreePrivacy,
+		registerApp,
 		getRegistrationID,
+		setAPNsForProduction,
+		setUpNotificationConfig,
 		addPushReceiver,
 		stopPush,
 		restartPush,
@@ -72,6 +77,7 @@
 	import {
 		xiaomiCompileOnly
 	} from "@/uni_modules/mobPush-xiaomi";
+	
 	export default {
 		created: function() {
 
@@ -90,7 +96,17 @@
 
 		methods: {
 			unisubmitPolicyGrantResult() {
+				// iOS端需单独调用同意隐私协议
+				agreePrivacy()
 				mobSDKsubmitPolicyGrantResult(true)
+			},
+			configiOSApp() {
+				// iOS 需手动调用注册方法注册 或 配置Info.plist文件
+				registerApp('3276d3e413040', '4280a3a6df667cfce37528dec03fd9c3')
+				// 设置APNs环境
+				setAPNsForProduction(true)
+				// 设置APNs权限 Badge 1 Sound 2 Alert 4 All 7
+				setUpNotificationConfig(7)
 			},
 			//获取推送rid
 			unigetRegistrationID() {
@@ -112,7 +128,7 @@
 						uni.showToast({
 							title: "onCustomMessageReceive:" + message,
 							icon: 'none',
-							duration: 5000
+							duration: 2000
 						})
 					},
 					onNotifyMessageReceive(message) {
@@ -120,7 +136,7 @@
 						uni.showToast({
 							title: "onNotifyMessageReceive:" + message,
 							icon: 'none',
-							duration: 5000
+							duration: 2000
 						})
 					},
 					onNotifyMessageOpenedReceive(message) {
@@ -128,7 +144,7 @@
 						uni.showToast({
 							title: "onNotifyMessageOpenedReceive:" + message,
 							icon: 'none',
-							duration: 5000
+							duration: 2000
 						})
 					},
 					onTagsCallback(tags, operation, errorCode) {
@@ -136,7 +152,7 @@
 							title: "onTagsCallback tags:" + tags + ",operation:" + operation +
 								",errorCode:" + errorCode,
 							icon: 'none',
-							duration: 5000
+							duration: 2000
 						})
 					},
 					onAliasCallback(alias, operation, errorCode) {
@@ -144,7 +160,7 @@
 							title: "onAliasCallback alias:" + alias + ",operation:" + operation +
 								",errorCode:" + errorCode,
 							icon: 'none',
-							duration: 5000
+							duration: 2000
 						})
 					},
 				})
@@ -164,7 +180,7 @@
 						uni.showToast({
 							title: "isPushStopped:" + JSON.stringify(res),
 							icon: 'none',
-							duration: 5000
+							duration: 2000
 						})
 					}
 				})
@@ -175,7 +191,7 @@
 					uni.showToast({
 						title: "请输入别名！",
 						icon: 'none',
-						duration: 5000
+						duration: 2000
 					})
 					return
 				}
@@ -196,7 +212,7 @@
 					uni.showToast({
 						title: "请输入标签，以;隔开！",
 						icon: 'none',
-						duration: 5000
+						duration: 2000
 					})
 					return
 				}
@@ -205,11 +221,10 @@
 					uni.showToast({
 						title: "请输入标签，以;隔开！",
 						icon: 'none',
-						duration: 5000
+						duration: 2000
 					})
 					return
 				}
-				console.error(tags)
 				addTags(tags)
 			},
 			//获取标签
@@ -222,7 +237,7 @@
 					uni.showToast({
 						title: "请输入标签，以;隔开！",
 						icon: 'none',
-						duration: 5000
+						duration: 2000
 					})
 					return
 				}
@@ -231,18 +246,16 @@
 					uni.showToast({
 						title: "请输入标签，以;隔开！",
 						icon: 'none',
-						duration: 5000
+						duration: 2000
 					})
 					return
 				}
-				console.error(tags)
 				deleteTags(tags)
 			},
 			//清楚标签
 			unicleanAllTags() {
 				cleanTags()
 			},
-
 			unisetSilenceTime() {
 				setSilenceTime(0, 0, 23, 59)
 			},
@@ -257,7 +270,7 @@
 						uni.showToast({
 							title: "getShowBadge:" + JSON.stringify(res),
 							icon: 'none',
-							duration: 5000
+							duration: 2000
 						})
 					}
 				})

@@ -1,85 +1,156 @@
-/**
- * 引用 iOS 系统库，示例如下：
- * import { UIDevice } from "UIKit";
- * [可选实现，按需引入]
- */
+import { 
+	RegisterApp, 
+	AgreePrivacy, 
+	SetAPNsForProduction,
+	RegistrationId, 
+	StopPush, 
+	SetAlias, 
+	GetAlias, 
+	DeleteAlias,
+	RestartPush, 
+	IsPushStopped,
+	UniMobPushCallback,
+	UniMobPushReceiver,
+	SetUpNotificationConfig, 
+	AddTags, 
+	GetTags, 
+	DeleteTags, 
+	CleanTags, 
+	SetShowBadge, 
+	GetShowBadge, 
+	SetSilenceTime,
+	AddPushReceiver
+} from '../interface.uts'
+import { Bool, Int } from 'Swift';
 
-/* 引入 interface.uts 文件中定义的变量 */
-import { MyApiOptions, MyApiResult, MyApi, MyApiSync } from '../interface.uts';
-
-/* 引入 unierror.uts 文件中定义的变量 */
-import { MyApiFailImpl } from '../unierror';
-
-/**
- * 引入三方库
- * [可选实现，按需引入]
- *
- * 在 iOS 平台引入三方库有以下两种方式：
- * 1、通过引入三方库framework 或者.a 等方式，需要将 .framework 放到 ./Frameworks 目录下，将.a 放到 ./Libs 目录下。更多信息[详见](https://uniapp.dcloud.net.cn/plugin/uts-plugin.html#ios-平台原生配置)
- * 2、通过 cocoaPods 方式引入，将要引入的 pod 信息配置到 config.json 文件下的 dependencies-pods 字段下。详细配置方式[详见](https://uniapp.dcloud.net.cn/plugin/uts-ios-cocoapods.html)
- *
- * 在通过上述任意方式依赖三方库后，使用时需要在文件中 import:
- * 示例：import { LottieLoopMode	} from 'Lottie'
- */
-
-/**
- * UTSiOS 为平台内置对象，不需要 import 可直接调用其API，[详见](https://uniapp.dcloud.net.cn/uts/utsios.html)
- */
-
-/**
- * 异步方法
- *
- * uni-app项目中（vue/nvue）调用示例：
- * 1、引入方法声明 import { myApi } from "@/uni_modules/uts-api"
- * 2、方法调用
- * myApi({
- *   paramA: false,
- *   complete: (res) => {
- *      console.log(res)
- *   }
- * });
- *
- */
-export const myApi : MyApi = function (options : MyApiOptions) {
-
-  if (options.paramA == true) {
-    // 返回数据
-    const res : MyApiResult = {
-      fieldA: 85,
-      fieldB: true,
-      fieldC: 'some message'
-    };
-    options.success?.(res);
-    options.complete?.(res);
-
-  } else {
-    // 返回错误
-    let failResult = new MyApiFailImpl(9010001);
-    options.fail?.(failResult)
-    options.complete?.(failResult)
-  }
-
+export const agreePrivacy: AgreePrivacy = function(): void {
+	UniMobPush.agreePrivacy(true, (result: Bool) => {
+		
+	})
 }
 
-/**
- * 同步方法
- *
- * uni-app项目中（vue/nvue）调用示例：
- * 1、引入方法声明 import { myApiSync } from "@/uni_modules/uts-api"
- * 2、方法调用
- * myApiSync(true);
- *
- */
-export const myApiSync : MyApiSync = function (paramA : boolean) : MyApiResult {
-  // 返回数据，根据插件功能获取实际的返回值
-  const res : MyApiResult = {
-    fieldA: 85,
-    fieldB: paramA,
-    fieldC: 'some message'
-  };
-  return res;
+export const registerApp: RegisterApp = function(appKey: string|null, appSecret: string|null): void {
+	UniMobPush.initApp(appKey, appKey)
 }
 
-/**
- * 更多插件开发的信息详见：https://uniapp.dcloud.net.cn/plugin/uts-plugin.html
- */
+export const setAPNsForProduction: SetAPNsForProduction = function(isPro: boolean): void {
+	let status = isPro ? true : false
+	UniMobPush.setAPNsForProduction(status)
+}
+
+export const setUpNotificationConfig: SetUpNotificationConfig = function(option: number): void {
+	UniMobPush.setupNotificationWithType(option.toInt())
+}
+
+export const getRegistrationID : RegistrationId = function(callback : UniMobPushCallback) {
+	let uniCallBack = new unicallback<String, Int>(callback)
+	UniMobPush.getRegistrationID((rid: String, code: Int) => {
+		console.log("Rid: " + String(rid))
+		if (code == 0) {
+			uniCallBack.onCallback(rid, code)
+		}
+	})
+}
+
+export const stopPush: StopPush = function() : void {
+	UniMobPush.stopPush();
+}
+
+export const restartPush: RestartPush = function() : void {
+	UniMobPush.restartPush();
+}
+
+export const isPushStopped: IsPushStopped = function(callback : UniMobPushCallback) {
+	let status = UniMobPush.isPushStoped()
+	let uniCallBack = new unicallback<Bool, Int>(callback)
+	uniCallBack.onCallback(status, 0)
+}
+
+@UTSJS.keepAlive
+export function addPushReceiver(receiver: UniMobPushReceiver) {
+	UniMobPush.addObserverToMsg(new unireceiver(receiver))
+}
+
+export const addTags : AddTags = function (tags: string[]): void {
+	UniMobPush.addTagsToService(tags)
+}
+
+export const getTags : GetTags = function (): void {
+	UniMobPush.getTagsFromService()
+}
+
+export const deleteTags : DeleteTags = function (tags: string[]): void {
+	UniMobPush.deleteTagsFromService(tags)
+}
+
+export const cleanTags : CleanTags = function (): void {
+	UniMobPush.cleanAllTags()
+}
+
+export const setAlias: SetAlias = function(alias : String): void {
+	UniMobPush.addAliasToService(alias)
+}
+
+export const getAlias: GetAlias = function () : void {
+	UniMobPush.getAliasFromService()
+}
+
+export const deleteAlias: DeleteAlias = function () : void {
+	UniMobPush.deleteAliasFromService()
+}
+
+export const setShowBadge : SetShowBadge = function (isShow : boolean) : void {}
+
+export const getShowBadge : GetShowBadge = function (callback : UniMobPushCallback) {
+	let block = new unicallback<Int, Int>(callback)
+	UniMobPush.getServiceBadge((count: Int, code: Int) => {
+		block.onCallback(count, code)
+	})
+}
+
+export const setSilenceTime: SetSilenceTime = function (startHour: number, startMinute: number, endHour: number, endMinute: number): void {}
+
+class unicallback<T, Int> {
+	jsCallback : UniMobPushCallback
+
+	constructor(callback : UniMobPushCallback) {
+		this.jsCallback = callback
+	}
+
+	onCallback(data : T, code: Int) : void {
+		let result : UTSJSONObject = {
+			"success": (code == 0),
+			"res": data as any,
+			"error": code as any
+		}
+		this.jsCallback.onCallback(result)
+	}
+}
+
+class unireceiver implements UniMobPushEventReceiver {
+	jsReceiver : UniMobPushReceiver
+	constructor(receive : UniMobPushReceiver) {
+		this.jsReceiver = receive
+	}
+	
+	onCustomMessageReceive(msg: string): void {
+		this.jsReceiver.onCustomMessageReceive(msg)
+	}
+	
+	onNotifyMessageReceive(msg: string): void {
+		this.jsReceiver.onNotifyMessageReceive(msg)
+	}
+	
+	onNotifyMessageOpenedReceive(msg: string): void {
+		this.jsReceiver.onNotifyMessageOpenedReceive(msg)
+	}
+	
+	onTagsEventCallBack(tags: string, operation: Int, errorCode: Int): void {
+		this.jsReceiver.onTagsCallback(tags.split(','), Number.from(operation), Number.from(errorCode))
+	}
+	
+	onAliasEventCallBack(alias: string, operation: Int, errorCode: Int): void {
+		this.jsReceiver.onAliasCallback(alias, Number.from(operation), Number.from(errorCode))
+	}
+}
+

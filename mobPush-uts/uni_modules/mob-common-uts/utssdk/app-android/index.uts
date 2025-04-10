@@ -5,6 +5,6 @@ export const mobSDKInit : MobSDKInit = function () : void {
 	MobSDK.init(UTSAndroid.getAppContext())
 }
 
-export const mobSDKsubmitPolicyGrantResult : MobSDKsubmitPolicyGrantResult = function (granted : boolean) : void {
+export const mobSDKsubmitPolicyGrantResult : MobSDKsubmitPolicyGrantResult = function () : void {
 	MobSDK.submitPolicyGrantResult(true)
 }
