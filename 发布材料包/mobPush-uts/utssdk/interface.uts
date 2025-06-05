@@ -89,4 +89,4 @@ export type SetShowBadge = (showBadge : boolean) => void
 export type GetShowBadge = (callback : UniMobPushCallback) => void
 
 /* 设置静默时间 仅Android */
-export type SetSilenceTime = (startHour : number, startMinute : number, endHour : number, endMinute : number) => void
+export type SetSilenceTime = (startHour : Int, startMinute : Int, endHour : Int, endMinute : Int) => void
