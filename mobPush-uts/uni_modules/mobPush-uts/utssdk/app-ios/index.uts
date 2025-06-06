@@ -108,8 +108,6 @@ export const getShowBadge : GetShowBadge = function (callback : UniMobPushCallba
 	})
 }
 
-export const setSilenceTime: SetSilenceTime = function (startHour: number, startMinute: number, endHour: number, endMinute: number): void {}
-
 class unicallback<T, Int> {
 	jsCallback : UniMobPushCallback
 
