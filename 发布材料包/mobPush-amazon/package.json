@@ -1,10 +1,10 @@
 {
-  "id": "mobPush-fcm",
-  "displayName": "mobPush-fcm",
+  "id": "mobPush-amazon",
+  "displayName": "mobPush-amazon",
   "version": "1.0.2",
-  "description": "mobPush-fcm",
+  "description": "mobPush-amazon",
   "keywords": [
-    "mobPush-fcm"
+    "mobPush-amazon"
 ],
   "repository": "",
   "engines": {
