@@ -1,0 +1,154 @@
+import { 
+	RegisterApp, 
+	AgreePrivacy, 
+	SetAPNsForProduction,
+	RegistrationId, 
+	StopPush, 
+	SetAlias, 
+	GetAlias, 
+	DeleteAlias,
+	RestartPush, 
+	IsPushStopped,
+	UniMobPushCallback,
+	UniMobPushReceiver,
+	SetUpNotificationConfig, 
+	AddTags, 
+	GetTags, 
+	DeleteTags, 
+	CleanTags, 
+	SetShowBadge, 
+	GetShowBadge, 
+	SetSilenceTime,
+	AddPushReceiver
+} from '../interface.uts'
+import { Bool, Int } from 'Swift';
+
+export const agreePrivacy: AgreePrivacy = function(): void {
+	UniMobPush.agreePrivacy(true, (result: Bool) => {
+		
+	})
+}
+
+export const registerApp: RegisterApp = function(appKey: string|null, appSecret: string|null): void {
+	UniMobPush.initApp(appKey, appKey)
+}
+
+export const setAPNsForProduction: SetAPNsForProduction = function(isPro: boolean): void {
+	let status = isPro ? true : false
+	UniMobPush.setAPNsForProduction(status)
+}
+
+export const setUpNotificationConfig: SetUpNotificationConfig = function(option: number): void {
+	UniMobPush.setupNotificationWithType(option.toInt())
+}
+
+export const getRegistrationID : RegistrationId = function(callback : UniMobPushCallback) {
+	let uniCallBack = new unicallback<String, Int>(callback)
+	UniMobPush.getRegistrationID((rid: String, code: Int) => {
+		console.log("Rid: " + String(rid))
+		if (code == 0) {
+			uniCallBack.onCallback(rid, code)
+		}
+	})
+}
+
+export const stopPush: StopPush = function() : void {
+	UniMobPush.stopPush();
+}
+
+export const restartPush: RestartPush = function() : void {
+	UniMobPush.restartPush();
+}
+
+export const isPushStopped: IsPushStopped = function(callback : UniMobPushCallback) {
+	let status = UniMobPush.isPushStoped()
+	let uniCallBack = new unicallback<Bool, Int>(callback)
+	uniCallBack.onCallback(status, 0)
+}
+
+@UTSJS.keepAlive
+export function addPushReceiver(receiver: UniMobPushReceiver) {
+	UniMobPush.addObserverToMsg(new unireceiver(receiver))
+}
+
+export const addTags : AddTags = function (tags: string[]): void {
+	UniMobPush.addTagsToService(tags)
+}
+
+export const getTags : GetTags = function (): void {
+	UniMobPush.getTagsFromService()
+}
+
+export const deleteTags : DeleteTags = function (tags: string[]): void {
+	UniMobPush.deleteTagsFromService(tags)
+}
+
+export const cleanTags : CleanTags = function (): void {
+	UniMobPush.cleanAllTags()
+}
+
+export const setAlias: SetAlias = function(alias : String): void {
+	UniMobPush.addAliasToService(alias)
+}
+
+export const getAlias: GetAlias = function () : void {
+	UniMobPush.getAliasFromService()
+}
+
+export const deleteAlias: DeleteAlias = function () : void {
+	UniMobPush.deleteAliasFromService()
+}
+
+export const setShowBadge : SetShowBadge = function (isShow : boolean) : void {}
+
+export const getShowBadge : GetShowBadge = function (callback : UniMobPushCallback) {
+	let block = new unicallback<Int, Int>(callback)
+	UniMobPush.getServiceBadge((count: Int, code: Int) => {
+		block.onCallback(count, code)
+	})
+}
+
+class unicallback<T, Int> {
+	jsCallback : UniMobPushCallback
+
+	constructor(callback : UniMobPushCallback) {
+		this.jsCallback = callback
+	}
+
+	onCallback(data : T, code: Int) : void {
+		let result : UTSJSONObject = {
+			"success": (code == 0),
+			"res": data as any,
+			"error": code as any
+		}
+		this.jsCallback.onCallback(result)
+	}
+}
+
+class unireceiver implements UniMobPushEventReceiver {
+	jsReceiver : UniMobPushReceiver
+	constructor(receive : UniMobPushReceiver) {
+		this.jsReceiver = receive
+	}
+	
+	onCustomMessageReceive(msg: string): void {
+		this.jsReceiver.onCustomMessageReceive(msg)
+	}
+	
+	onNotifyMessageReceive(msg: string): void {
+		this.jsReceiver.onNotifyMessageReceive(msg)
+	}
+	
+	onNotifyMessageOpenedReceive(msg: string): void {
+		this.jsReceiver.onNotifyMessageOpenedReceive(msg)
+	}
+	
+	onTagsEventCallBack(tags: string, operation: Int, errorCode: Int): void {
+		this.jsReceiver.onTagsCallback(tags.split(','), Number.from(operation), Number.from(errorCode))
+	}
+	
+	onAliasEventCallBack(alias: string, operation: Int, errorCode: Int): void {
+		this.jsReceiver.onAliasCallback(alias, Number.from(operation), Number.from(errorCode))
+	}
+}
+

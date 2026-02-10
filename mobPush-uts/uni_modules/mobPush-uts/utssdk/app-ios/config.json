@@ -1,0 +1,9 @@
+{
+  "deploymentTarget": "9",
+  "dependencies-pods": [
+	  {
+		  "name": "mob_pushsdk",
+		  "version": "4.3.5"
+	  }
+  ]
+}

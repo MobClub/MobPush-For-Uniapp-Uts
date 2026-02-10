@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="cn.mob.mobCommon">
+
+    <application>
+
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="${Mob-AppKey}" />
+
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="${Mob-AppSecret}" />
+
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <intent-filter android:priority="1000">
+
+                <data android:scheme="db-7janx53ilz11gbs" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
