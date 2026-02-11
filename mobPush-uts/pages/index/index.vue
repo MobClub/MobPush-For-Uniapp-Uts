@@ -1,4 +1,3 @@
-<!-- 本示例未包含完整css，获取外链css请参考上文，在hello uni-app项目中查看 -->
 <template>
 	<view>
 		<view class="uni-padding-wrap uni-common-mt">
@@ -8,7 +7,7 @@
 					<button v-on:click="unisubmitPolicyGrantResult">submitPolicyGrantResult</button>
 					<button v-on:click="configiOSApp">registerAndConfig(iOS)</button>
 					<button v-on:click="unigetRegistrationID">getRegistrationID</button>
-					<button v-on:click="uniaddPushReceiver">addPushReceiver</button>
+					<button v-if="!isAndroid" v-on:click="uniaddPushReceiver">addPushReceiver</button>
 					<button v-on:click="unistopPush">stopPush</button>
 					<button v-on:click="unirestartPush">restartPush</button>
 					<button v-on:click="uniisPushStopped">isPushStopped</button>
@@ -77,10 +76,58 @@
 	import {
 		xiaomiCompileOnly
 	} from "@/uni_modules/mobPush-xiaomi";
-	
-	export default {
-		created: function() {
+	addPushReceiver({
+		onCustomMessageReceive(message) {
+			console.log("js onCustomMessageReceive" + message)
+			uni.showToast({
+				title: "onCustomMessageReceive:" + message,
+				icon: 'none',
+				duration: 2000
+			})
+		},
+		onNotifyMessageReceive(message) {
+			console.log("js onNotifyMessageReceive" + message)
+			uni.showToast({
+				title: "onNotifyMessageReceive:" + message,
+				icon: 'none',
+				duration: 2000
+			})
+		},
+		onNotifyMessageOpenedReceive(message) {
+			console.log("js onNotifyMessageOpenedReceive" + message)
+			uni.showToast({
+				title: "onNotifyMessageOpenedReceive:" + message,
+				icon: 'none',
+				duration: 2000
+			})
+		},
+		onTagsCallback(tags, operation, errorCode) {
+			uni.showToast({
+				title: "onTagsCallback tags:" + tags + ",operation:" + operation +
+					",errorCode:" + errorCode,
+				icon: 'none',
+				duration: 2000
+			})
+		},
+		onAliasCallback(alias, operation, errorCode) {
+			uni.showToast({
+				title: "onAliasCallback alias:" + alias + ",operation:" + operation +
+					",errorCode:" + errorCode,
+				icon: 'none',
+				duration: 2000
+			})
+		},
+	})
 
+	export default {
+		activated: function() {
+			console.log("activated")
+		},
+		created: function() {
+			console.log("created")
+		},
+		onLoad() {
+			this.checkPlatform()
 		},
 		data() {
 			return {
@@ -89,15 +136,40 @@
 				startHour: 0,
 				startMinute: 0,
 				endHour: 0,
-				endMinute: 0
-
+				endMinute: 0,
+				isAndroid: false,
+				isIOS: false,
+				platform: ''
 			}
 		},
 
 		methods: {
+			checkPlatform() {
+				try {
+					const systemInfo = uni.getSystemInfoSync()
+					this.platform = systemInfo.platform
+
+					// 判断平台
+					if (systemInfo.platform === 'android') {
+						this.isAndroid = true
+						this.isIOS = false
+						console.log('当前是 Android 设备')
+					} else if (systemInfo.platform === 'ios') {
+						this.isAndroid = false
+						this.isIOS = true
+						console.log('当前是 iOS 设备')
+					}
+				} catch (e) {
+					console.error('获取系统信息失败', e)
+				}
+			},
 			unisubmitPolicyGrantResult() {
 				// iOS端需单独调用同意隐私协议
-				agreePrivacy()
+				const res = uni.getSystemInfoSync();
+				const isAndroid = res.platform.toLocaleLowerCase() === "android";
+				if (!isAndroid) {
+					agreePrivacy()
+				}
 				mobSDKsubmitPolicyGrantResult(true)
 			},
 			configiOSApp() {
