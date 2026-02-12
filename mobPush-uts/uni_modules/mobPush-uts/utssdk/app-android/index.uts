@@ -166,7 +166,7 @@ class innerReceiver implements MobPushReceiver {
 		}
 	}
 
-	override onAliasCallback(context : Context, alias : String, operation : Int, errorCode : Int) : void {
+	override onAliasCallback(context : Context, alias ?: String, operation : Int, errorCode : Int) : void {
 		if (alias == null) {
 			alias = ""
 		}
