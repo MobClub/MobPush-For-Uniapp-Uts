@@ -18,6 +18,8 @@ import ActivityLifecycleCallbacks from 'android.app.Application.ActivityLifecycl
 let hasAddChannel = false
 let uniReceiver : UniMobPushReceiver | null = null
 let cachedClickEvents : Array<string> = []
+let cachedArrivedEvents : Array<string> = []
+let cachedCustomArrivedEvents : Array<string> = []
 
 export const getRegistrationID : RegistrationId = function (callback : UniMobPushCallback) {
 	setChannel()
@@ -26,11 +28,23 @@ export const getRegistrationID : RegistrationId = function (callback : UniMobPus
 @UTSJS.keepAlive
 export function addPushReceiver(receiver : UniMobPushReceiver) {
 	setChannel()
+	if (cachedArrivedEvents.length > 0) {
+		cachedArrivedEvents.forEach((msg) => {
+			receiver.onNotifyMessageReceive(msg)
+		})
+		cachedArrivedEvents = []
+	}
 	if (cachedClickEvents.length > 0) {
 		cachedClickEvents.forEach((msg) => {
 			receiver.onNotifyMessageOpenedReceive(msg)
 		})
 		cachedClickEvents = []
+	}
+	if (cachedCustomArrivedEvents.length > 0) {
+		cachedCustomArrivedEvents.forEach((msg) => {
+			receiver.onCustomMessageReceive(msg)
+		})
+		cachedCustomArrivedEvents = []
 	}
 	uniReceiver = receiver
 }
@@ -133,16 +147,22 @@ class unicallback<T> implements MobPushCallback<T> {
 class innerReceiver implements MobPushReceiver {
 
 	override  onCustomMessageReceive(context : Context, mobPushCustomMessage : MobPushCustomMessage) : void {
+		let msg = HashonHelper.fromObject(mobPushCustomMessage)
 		const receiver = uniReceiver;
 		if (receiver != null) {
-			receiver.onCustomMessageReceive(HashonHelper.fromObject(mobPushCustomMessage))
+			receiver.onCustomMessageReceive(msg)
+		} else {
+			cachedCustomArrivedEvents.push(msg)
 		}
 	}
 
 	override  onNotifyMessageReceive(context : Context, mobPushNotifyMessage : MobPushNotifyMessage) : void {
+		let msg = HashonHelper.fromObject(mobPushNotifyMessage)
 		const receiver = uniReceiver;
 		if (receiver != null) {
-			receiver.onNotifyMessageReceive(HashonHelper.fromObject(mobPushNotifyMessage))
+			receiver.onNotifyMessageReceive(msg)
+		} else {
+			cachedArrivedEvents.push(msg)
 		}
 	}
 
@@ -196,11 +216,11 @@ class MyLifecycleCallbacks implements ActivityLifecycleCallbacks {
 	}
 
 	override onActivityStarted(a : Activity) : void {
-
+		MobPush.parseManufacturerMessage(a.getIntent())
 	}
 
 	override onActivityResumed(a : Activity) : void {
-
+		MobPush.parseManufacturerMessage(a.getIntent())
 	}
 
 	override onActivityPaused(a : Activity) : void {
