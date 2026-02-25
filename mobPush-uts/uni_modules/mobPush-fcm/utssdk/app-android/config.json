@@ -2,5 +2,17 @@
 	"minSdkVersion": "21",
 	"dependencies": [
 		"com.google.firebase:firebase-messaging:23.1.0"
-	]
+	],
+	"project": {
+		"plugins": [
+			"com.google.gms.google-services"
+		],
+		"dependencies": [
+			"com.google.gms:google-services:4.4.2"
+		],
+		"repositories": [
+			"google()",
+			"mavenCentral()"
+		]
+	}
 }
